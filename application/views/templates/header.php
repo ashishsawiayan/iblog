@@ -30,7 +30,7 @@
             </div>
             <div class="collapse navbar-collapse" id="collapsibleNavbar">
                 <ul class="navbar-nav mr-auto">
-                    <li><a class="nav-link" href="<?php echo base_url(); ?>">Home </a></li>
+                    <!--li><a class="nav-link" href="<?php echo base_url(); ?>">Home </a></li-->
                     <li><a class="nav-link" href="<?php echo base_url(); ?>about">About </a></li>
                     <li><a class="nav-link" href="<?php echo base_url(); ?>posts">Blog </a></li>
                     <li><a class="nav-link" href="<?php echo base_url(); ?>categories">Categories </a>

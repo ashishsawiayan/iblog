@@ -5,6 +5,7 @@ $route['posts/index'] = 'posts/index';
 $route['posts/create'] = 'posts/create';
 $route['posts/mypost'] = 'posts/mypost';
 $route['posts/update'] = 'posts/update';
+$route['posts/post_by_year'] = 'posts/post_by_year';
 $route['posts/(:any)'] = 'posts/view/$1';
 $route['posts'] = 'posts/index';
 

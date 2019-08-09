@@ -14,12 +14,18 @@
 			$data['title'] = 'Latest Posts';
 
 			$data['posts'] = $this->post_model->get_posts(FALSE, $config['per_page'], $offset);
+			
+
+			$data['years']=$this->post_model->get_years();
+	//print_r($data['years']);
 			//print_r($data);
 
 			$this->load->view('templates/header');
 			$this->load->view('posts/index', $data);
 			$this->load->view('templates/footer');
 		}
+
+	
 
 		public function view($slug = NULL){
 			$data['post'] = $this->post_model->get_posts($slug);
@@ -56,6 +62,33 @@
 			$this->load->view('posts/index', $data);
 			$this->load->view('templates/footer');
 		}
+
+
+		public function post_by_year($year){
+			$offset = 0;
+			$config['base_url'] = base_url() . 'posts/mypost/';
+			$config['total_rows'] = $this->db->count_all('posts');
+			$config['per_page'] = 3;
+			$config['uri_segment'] = 3;
+			$config['attributes'] = array('class' => 'pagination-link');
+
+			// Init Pagination
+			$this->pagination->initialize($config);
+
+			$data['title'] = 'Latest Posts';
+
+			
+			$data['years']=$this->post_model->get_years();
+			$data['posts'] = $this->post_model->get_post_year($year);
+			//print_r($year);
+
+			$this->load->view('templates/header');
+			$this->load->view('posts/index', $data);
+			$this->load->view('templates/footer');
+		}
+		
+
+
 
 
 		

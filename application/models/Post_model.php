@@ -20,6 +20,13 @@
 			return $query->row_array();
 		}
 
+		public function get_years()
+		{
+			$sql="SELECT DATE_FORMAT(created_at, '%Y') as year FROM posts GROUP BY year";
+			$query=$this->db->query($sql);
+			return $query->result_array();
+		}
+
 		public function get_my_posts($slug = FALSE, $limit = FALSE, $offset = FALSE){
 			if($limit){
 				$this->db->limit($limit, $offset);
@@ -29,6 +36,30 @@
 				$this->db->order_by('posts.id', 'DESC');
 				$this->db->join('categories', 'categories.user_id = posts.user_id');
 				$query = $this->db->get('posts');
+				return $query->result_array();
+			}
+			
+			
+			$query = $this->db->get_where('posts', array('user_id' => $user_id));
+			return $query->row_array();
+		}
+
+		public function get_post_year($year){
+			$slug = FALSE; $limit = FALSE; $offset = FALSE;
+			if($limit){
+				$this->db->limit($limit, $offset);
+			}
+		//	print_r($year);
+			$user_id=$this->session->userdata('user_id');
+			if($slug === FALSE){
+				$this->db->select('*');
+				$this->db->from('posts');
+				$this->db->order_by('posts.id', 'DESC');
+				$this->db->join('categories', 'categories.id = posts.category_id');
+				$this->db->where("DATE_FORMAT(posts.created_at, \"%Y\") =", $year);
+				$query = $this->db->get();
+				//$this->db->where("DATE_FORMAT(create_at, '%Y') =", 2017);
+				
 				return $query->result_array();
 			}
 			

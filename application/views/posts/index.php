@@ -1,3 +1,12 @@
+
+<div class="row">
+	<div class="col-md-3 mt-4">
+	<?php foreach($years as $year) : ?>
+	<p><a class="btn btn-default" href="<?php echo site_url("/posts/post_by_year/".$year['year'] ); ?>"><?php echo $year['year']; ?></a></p>
+	<?php endforeach; ?>
+
+</div>
+<div class="col-md-9">
 <h2><?= $title ?></h2>
 <?php foreach($posts as $post) : ?>
 	<h5><?php echo $post['title']; ?></h5>
@@ -16,4 +25,6 @@
 <?php endforeach; ?>
 <div class="pagination-links">
 		<?php echo $this->pagination->create_links(); ?>
+</div>
+</div>
 </div>
