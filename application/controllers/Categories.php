@@ -4,7 +4,7 @@
 			$data['title'] = 'Categories';
 
 			$data['categories'] = $this->category_model->get_categories();
-
+			
 			$this->load->view('templates/header');
 			$this->load->view('categories/index', $data);
 			$this->load->view('templates/footer');
@@ -38,6 +38,7 @@
 			$data['title'] = $this->category_model->get_category($id)->name;
 
 			$data['posts'] = $this->post_model->get_posts_by_category($id);
+			//$data['years']=$this->post_model->get_years(0);
 
 			$this->load->view('templates/header');
 			$this->load->view('posts/index', $data);

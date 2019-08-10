@@ -20,9 +20,23 @@
 			return $query->row_array();
 		}
 
-		public function get_years()
+		public function get_years($year)
 		{
+			if($year!=0)
+			{
+			$sql="SELECT DATE_FORMAT(created_at, '%Y') as year FROM posts where DATE_FORMAT(created_at, '%Y')=$year GROUP BY year ";
+			$query=$this->db->query($sql);
+			return $query->result_array();
+			}
+			else
 			$sql="SELECT DATE_FORMAT(created_at, '%Y') as year FROM posts GROUP BY year";
+			$query=$this->db->query($sql);
+			return $query->result_array();
+		}
+
+		public function get_months($year)
+		{
+			$sql="SELECT DATE_FORMAT(created_at, '%M') as month FROM posts where DATE_FORMAT(created_at, '%Y')=$year group by month";
 			$query=$this->db->query($sql);
 			return $query->result_array();
 		}
@@ -34,7 +48,8 @@
 			$user_id=$this->session->userdata('user_id');
 			if($slug === FALSE){
 				$this->db->order_by('posts.id', 'DESC');
-				$this->db->join('categories', 'categories.user_id = posts.user_id');
+				$this->db->join('categories', 'categories.id = posts.category_id');
+				$this->db->where('posts.user_id =',$user_id);
 				$query = $this->db->get('posts');
 				return $query->result_array();
 			}
@@ -67,6 +82,31 @@
 			$query = $this->db->get_where('posts', array('user_id' => $user_id));
 			return $query->row_array();
 		}
+		public function get_post_month($year,$month){
+			$slug = FALSE; $limit = FALSE; $offset = FALSE;
+			if($limit){
+				$this->db->limit($limit, $offset);
+			}
+		//	print_r($year);
+			$user_id=$this->session->userdata('user_id');
+			if($slug === FALSE){
+				$this->db->select('*');
+				$this->db->from('posts');
+				$this->db->order_by('posts.id', 'DESC');
+				$this->db->join('categories', 'categories.id = posts.category_id');
+				$this->db->where("DATE_FORMAT(posts.created_at, \"%Y\") =", $year);
+				$this->db->where("DATE_FORMAT(posts.created_at, \"%m\") =", $month);
+				$query = $this->db->get();
+				//$this->db->where("DATE_FORMAT(create_at, '%Y') =", 2017);
+				
+				return $query->result_array();
+			}
+			
+			
+			$query = $this->db->get_where('posts', array('user_id' => $user_id));
+			return $query->row_array();
+		}
+		
 
 		public function create_post($post_image){
 			$slug = url_title($this->input->post('title'));

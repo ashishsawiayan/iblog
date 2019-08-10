@@ -16,8 +16,8 @@
 			$data['posts'] = $this->post_model->get_posts(FALSE, $config['per_page'], $offset);
 			
 
-			$data['years']=$this->post_model->get_years();
-	//print_r($data['years']);
+			$data['years']=$this->post_model->get_years(0);
+	
 			//print_r($data);
 
 			$this->load->view('templates/header');
@@ -56,6 +56,7 @@
 			$data['title'] = 'Latest Posts';
 
 			$data['posts'] = $this->post_model->get_my_posts(FALSE, $config['per_page'], $offset);
+			//$data['years']=$this->post_model->get_years(0);
 			//print_r($data);
 
 			$this->load->view('templates/header');
@@ -77,9 +78,64 @@
 
 			$data['title'] = 'Latest Posts';
 
-			
-			$data['years']=$this->post_model->get_years();
+			$data['months']=$this->post_model->get_months($year);
+			$data['years']=$this->post_model->get_years($year);
 			$data['posts'] = $this->post_model->get_post_year($year);
+			
+			$this->load->view('templates/header');
+			$this->load->view('posts/index', $data);
+			$this->load->view('templates/footer');
+		}
+
+		public function post_by_months($year){
+			$offset = 0;
+			$config['base_url'] = base_url() . 'posts/mypost/';
+			$config['total_rows'] = $this->db->count_all('posts');
+			$config['per_page'] = 3;
+			$config['uri_segment'] = 3;
+			$config['attributes'] = array('class' => 'pagination-link');
+
+			// Init Pagination
+			$this->pagination->initialize($config);
+
+			$data['title'] = 'Latest Posts';
+
+			
+			$data['months']=$this->post_model->get_months($year);
+			$data['years']=$this->post_model->get_years($year);
+			$data['posts'] = $this->post_model->get_post_year($year);
+			//print_r($data['months']);
+			$nmonth = date("m", strtotime('february'));
+			//print_r($nmonth);
+
+			//print_r($year);
+
+			$this->load->view('templates/header');
+			$this->load->view('posts/index', $data);
+			$this->load->view('templates/footer');
+		}
+		public function post_by_month($year,$month){
+			$offset = 0;
+			$config['base_url'] = base_url() . 'posts/mypost/';
+			$config['total_rows'] = $this->db->count_all('posts');
+			$config['per_page'] = 3;
+			$config['uri_segment'] = 3;
+			$config['attributes'] = array('class' => 'pagination-link');
+
+			// Init Pagination
+			$this->pagination->initialize($config);
+
+			$data['title'] = 'Latest Posts';
+
+			$nmonth = date("m", strtotime($month));
+			//print_r($nmonth);
+			//print_r($year);
+			$data['months']=$this->post_model->get_months($year);
+			$data['years']=$this->post_model->get_years($year);
+			$data['posts'] = $this->post_model->get_post_month($year,$nmonth);
+			//print_r($data);
+			
+
 			//print_r($year);
 
 			$this->load->view('templates/header');
